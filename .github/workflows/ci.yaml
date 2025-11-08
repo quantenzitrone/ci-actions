@@ -36,10 +36,9 @@ jobs:
     steps:
     - run: whoami
     - uses: cachix/install-nix-action@v31
-    - run: nix-channel --list
-    - run: nix-channel --add https://channels.nixos.org/${{inputs.nixpkgs}} nixpkgs
-    - run: nix-channel --update
-    - run: nix-env -iA nixpkgs.attic-client
+    # - run: nix-channel --list
+    # - run: nix-channel --add https://channels.nixos.org/${{inputs.nixpkgs}} nixpkgs
+    # - run: nix-channel --update
     - name: Setup upterm session
       uses: owenthereal/action-upterm@v1
       with:
