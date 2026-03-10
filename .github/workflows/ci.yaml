@@ -3,9 +3,9 @@ on:
   workflow_dispatch:
     inputs:
       runs-on:
-        description: 'machine type'
+        description: "machine type"
         required: true
-        default: 'ubuntu-latest'
+        default: "ubuntu-latest"
         type: choice
         options:
           - ubuntu-latest
@@ -26,11 +26,11 @@ on:
           - macos-14
           - macos-13
       nixpkgs:
-        description: 'nixpkgs repo link'
+        description: "nixpkgs repo link"
         type: string
         default: https://github.com/nixos/nixpkgs
       branch:
-        description: 'branch to clone'
+        description: "branch to clone"
         type: string
         default: master
 
@@ -38,15 +38,14 @@ jobs:
   build:
     runs-on: ${{ inputs.runs-on }}
     steps:
-    - run: whoami
-    - uses: cachix/install-nix-action@v31
-    - name: install tools
-      run: nix profile add github:nixos/nixpkgs/nixpkgs-unstable#{fish,git}
-    - name: change shell to fish
-      run: sudo chsh -s $(which fish) runner
-    - name: clone nixpkgs
-      run: git clone --branch ${{ inputs.branch }} --single-branch ${{ inputs.nixpkgs }}
-    - name: Setup upterm session
-      uses: owenthereal/action-upterm@v1
-      with:
-        limit-access-to-actor: true
+      - run: whoami
+      - name: install nix
+        uses: cachix/install-nix-action@v31
+      - name: install tools
+        run: nix profile add github:nixos/nixpkgs/nixpkgs-unstable#{fish,git,helix,nix-output-monitor,nixfmt}
+      - name: clone nixpkgs
+        run: git clone --branch ${{ inputs.branch }} --single-branch ${{ inputs.nixpkgs }}
+      - name: Setup upterm session
+        uses: owenthereal/action-upterm@v1
+        with:
+          limit-access-to-actor: true
